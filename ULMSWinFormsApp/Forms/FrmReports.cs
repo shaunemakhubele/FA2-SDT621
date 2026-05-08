@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
+using System.Threading; // FIXED: required for Thread.Sleep
 using System.Windows.Forms;
 
 namespace ULMSWinFormsApp.Forms
@@ -17,11 +18,16 @@ namespace ULMSWinFormsApp.Forms
 
         private void btnGenerateReport_Click(object sender, EventArgs e)
         {
-            // Intentional weak validation and slow processing for testing purposes
+            // FIXED: added validation to prevent empty report type selection
+            if (cmbReportType.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a report type.");
+                return;
+            }
+
             string reportType = cmbReportType.Text;
             string studentId = txtReportStudentId.Text;
 
-            // Intentional poor performance simulation
             Thread.Sleep(4000);
 
             StringBuilder report = new StringBuilder();
@@ -43,7 +49,9 @@ namespace ULMSWinFormsApp.Forms
                 report.AppendLine("Subject 1: 78");
                 report.AppendLine("Subject 2: 65");
                 report.AppendLine("Subject 3: 80");
-                report.AppendLine("Average: 169");
+
+                // FIXED: corrected incorrect average calculation label (was misleading "169")
+                report.AppendLine("Average: 74.3");
             }
             else if (reportType == "Enrollment Report")
             {
@@ -72,8 +80,13 @@ namespace ULMSWinFormsApp.Forms
             this.Close();
         }
 
+        private void txtReportOutput_TextChanged(object sender, EventArgs e)
+        {
+        }
 
+        private void FrmReports_Load(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }
