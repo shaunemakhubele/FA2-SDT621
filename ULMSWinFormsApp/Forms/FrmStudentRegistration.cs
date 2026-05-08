@@ -19,13 +19,37 @@ namespace ULMSWinFormsApp.Forms
 
         private void btnSaveStudent_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtStudentId.Text) || 
+                string.IsNullOrWhiteSpace(txtFullName.Text) || 
+                string.IsNullOrWhiteSpace(txtEmail.Text) || 
+                cmbProgramme.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please fill in all required fields.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Safe Numeric Parsing (Exception Handling for Age)
+            if (!int.TryParse(txtAge.Text, out int parsedAge))
+            {
+                MessageBox.Show("Please enter a valid numeric value for Age.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtAge.Focus();
+                return;
+            }
+
+            // 3. Logic Validation (Range Check)
+            if (parsedAge < 16 || parsedAge > 100)
+            {
+                MessageBox.Show("Please enter a realistic age (between 16 and 100).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             // Intentional weak validation for testing purposes
             Student student = new Student
             {
                 StudentId = txtStudentId.Text,
                 FullName = txtFullName.Text,
                 Email = txtEmail.Text,
-                Age = int.Parse(txtAge.Text),
+                Age = parsedAge,
                 Programme = cmbProgramme.Text
             };
 

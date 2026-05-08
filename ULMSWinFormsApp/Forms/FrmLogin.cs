@@ -14,8 +14,8 @@ namespace ULMSWinFormsApp
             string username = txtUsername.Text;
             string password = txtPassword.Text;
 
-            // Intentional faulty validation logic (for testing scenario)
-            if (username == "admin" || password == "1234")
+            // Fixed faulty validation logic
+            if (username == "admin" && password == "1234")
             {
                 MessageBox.Show("Login Successful!");
 
@@ -25,7 +25,7 @@ namespace ULMSWinFormsApp
             }
             else
             {
-                MessageBox.Show("Invalid login credentials.");
+                MessageBox.Show("Invalid login credentials.");  
             }
         }
 
