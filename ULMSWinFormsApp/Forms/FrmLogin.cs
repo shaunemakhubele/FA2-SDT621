@@ -15,7 +15,7 @@ namespace ULMSWinFormsApp
             string password = txtPassword.Text;
 
             // Intentional faulty validation logic (for testing scenario)
-            if (username == "admin" || password == "1234")
+            if (username == "admin" && password == "1234") //fixed credentials for testing
             {
                 MessageBox.Show("Login Successful!");
 
@@ -37,5 +37,9 @@ namespace ULMSWinFormsApp
             txtUsername.Focus();
         }
 
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
