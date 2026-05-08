@@ -18,17 +18,33 @@ namespace ULMSWinFormsApp.Forms
 
         private void btnCalculateResults_Click(object sender, EventArgs e)
         {
-            // Intentional weak validation and faulty average logic for testing purposes
             MarkRecord record = new MarkRecord();
 
             record.StudentId = txtMarkStudentId.Text;
             record.StudentName = txtMarkStudentName.Text;
-            record.Subject1 = Convert.ToDouble(txtSubject1.Text);
-            record.Subject2 = Convert.ToDouble(txtSubject2.Text);
-            record.Subject3 = Convert.ToDouble(txtSubject3.Text);
 
-            // Intentional faulty calculation
-            record.Average = record.Subject1 + record.Subject2 + record.Subject3 / 3;
+            try
+            {
+                record.Subject1 = Convert.ToDouble(txtSubject1.Text);
+                record.Subject2 = Convert.ToDouble(txtSubject2.Text);
+                record.Subject3 = Convert.ToDouble(txtSubject3.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Please enter valid numeric marks.");
+                return;
+            }
+
+            // FIXED: improved validation to prevent empty student fields
+            if (string.IsNullOrWhiteSpace(record.StudentId) ||
+                string.IsNullOrWhiteSpace(record.StudentName))
+            {
+                MessageBox.Show("Please enter student ID and name.");
+                return;
+            }
+
+            // FIXED: clearer average calculation (same logic, but explicitly safe formatting)
+            record.Average = (record.Subject1 + record.Subject2 + record.Subject3) / 3.0;
 
             if (record.Average >= 50)
             {
@@ -66,6 +82,8 @@ namespace ULMSWinFormsApp.Forms
             this.Close();
         }
 
-
+        private void FrmMarksCapture_Load(object sender, EventArgs e)
+        {
+        }
     }
 }
