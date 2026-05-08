@@ -16,44 +16,85 @@ namespace ULMSWinFormsApp.Forms
             InitializeComponent();
         }
 
-
+        // SAVE BUTTON CLICK EVENT
         private void btnSaveStudent_Click(object sender, EventArgs e)
         {
-            // Intentional weak validation for testing purposes
+            // STEP 1: Basic validation for empty fields
+            if (string.IsNullOrWhiteSpace(txtStudentId.Text) ||
+                string.IsNullOrWhiteSpace(txtFullName.Text) ||
+                string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                cmbProgramme.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please fill in all required fields.");
+                return;
+            }
+
+            // STEP 2: Validate Age input safely (prevent crash)
+            int age;
+            if (!int.TryParse(txtAge.Text, out age))
+            {
+                MessageBox.Show("Please enter a valid numeric age.");
+                txtAge.Focus();
+                return;
+            }
+
+            // STEP 3: Basic email validation
+            if (!txtEmail.Text.Contains("@") || !txtEmail.Text.Contains("."))
+            {
+                MessageBox.Show("Please enter a valid email address.");
+                txtEmail.Focus();
+                return;
+            }
+
+            // STEP 4: Create Student object
             Student student = new Student
             {
-                StudentId = txtStudentId.Text,
-                FullName = txtFullName.Text,
-                Email = txtEmail.Text,
-                Age = int.Parse(txtAge.Text),
+                StudentId = txtStudentId.Text.Trim(),
+                FullName = txtFullName.Text.Trim(),
+                Email = txtEmail.Text.Trim(),
+                Age = age,
                 Programme = cmbProgramme.Text
             };
 
-            txtStudentOutput.Text =
-                "Student saved successfully!" + Environment.NewLine +
-                "Student ID: " + student.StudentId + Environment.NewLine +
-                "Full Name: " + student.FullName + Environment.NewLine +
-                "Email: " + student.Email + Environment.NewLine +
-                "Age: " + student.Age + Environment.NewLine +
-                "Programme: " + student.Programme;
+            // STEP 5: Display output using StringBuilder
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Student saved successfully!");
+            sb.AppendLine($"Student ID: {student.StudentId}");
+            sb.AppendLine($"Full Name: {student.FullName}");
+            sb.AppendLine($"Email: {student.Email}");
+            sb.AppendLine($"Age: {student.Age}");
+            sb.AppendLine($"Programme: {student.Programme}");
+
+            txtStudentOutput.Text = sb.ToString();
         }
 
+        // CLEAR BUTTON CLICK EVENT
         private void btnClearStudent_Click(object sender, EventArgs e)
         {
+            // STEP 1: Clear all input fields
             txtStudentId.Clear();
             txtFullName.Clear();
             txtEmail.Clear();
             txtAge.Clear();
+
+
             cmbProgramme.SelectedIndex = -1;
+
+
             txtStudentOutput.Clear();
+
             txtStudentId.Focus();
         }
 
-        //Add Back button to return to dashboard
+        // BACK BUTTON CLICK EVENT
         private void btnBackToDashboard_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        private void FrmStudentRegistration_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
